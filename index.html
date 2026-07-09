@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="클릭해서 왁스가 깨지고 말랑한 속을 누르는 왁뿌볼 ASMR 장난감">
+  <title>왁뿌볼</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app" data-app>
+    <section class="stage" aria-labelledby="title">
+      <p class="eyebrow">손끝으로 부수는 ASMR</p>
+      <h1 id="title">왁뿌볼</h1>
+      <p class="status" data-status>클릭해서 왁스를 깨보세요</p>
+
+      <button class="ball" type="button" data-ball aria-label="왁뿌볼 누르기">
+        <span class="wax" aria-hidden="true"></span>
+        <span class="crack c1" aria-hidden="true"></span>
+        <span class="crack c2" aria-hidden="true"></span>
+        <span class="crack c3" aria-hidden="true"></span>
+        <span class="crack c4" aria-hidden="true"></span>
+        <span class="inside" aria-hidden="true"></span>
+        <span class="shell-chip chip-a" aria-hidden="true"></span>
+        <span class="shell-chip chip-b" aria-hidden="true"></span>
+        <span class="shell-chip chip-c" aria-hidden="true"></span>
+        <span class="burst" aria-hidden="true">빡!</span>
+      </button>
+
+      <p class="counter" data-counter>0 / 7</p>
+    </section>
+
+    <section class="actions" aria-label="다시하기와 광고">
+      <button class="reset" type="button" data-reset>다시하기</button>
+      <div class="ad ad-inline" aria-label="광고 영역">광고 영역</div>
+    </section>
+
+    <div class="ad ad-bottom" aria-label="하단 광고 영역">하단 광고 영역</div>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

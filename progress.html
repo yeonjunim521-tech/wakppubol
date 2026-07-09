@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="10">
+  <title>왁뿌볼 진행상황</title>
+  <style>
+    :root {
+      --paper: #fffdf5;
+      --ink: #17130f;
+      --muted: #686056;
+      --line: #ded4c7;
+      --accent: #ff6f91;
+      --mint: #87e6ca;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 50% 0%, #fff 0 20%, #fff3c8 34%, #ffe9f0 62%, #eefcf8 100%);
+      color: var(--ink);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      margin: 0 0 28px;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      background: rgb(255 253 245 / 0.86);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      width: 180px;
+      background: rgb(255 255 255 / 0.68);
+      font-weight: 800;
+    }
+
+    tr:last-child th,
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .now {
+      display: inline-block;
+      padding: 4px 9px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--mint);
+      font-weight: 800;
+    }
+
+    .todo {
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>왁뿌볼 웹앱 MVP 진행상황</h1>
+    <p class="meta">10초마다 자동 새로고침됩니다. 메인 세션이 구현 단계마다 이 페이지를 갱신합니다.</p>
+    <table>
+      <tbody>
+        <tr>
+          <th>현재 단계</th>
+          <td><span class="now">현실감 리디자인 QA 완료</span></td>
+        </tr>
+        <tr>
+          <th>확인한 상태</th>
+          <td>왁스 공 표면을 3D 질감, 림 라이트, 접지 그림자, 깨진 껍질 조각 중심으로 리디자인했습니다. Node 상태 테스트와 Chrome 모바일/데스크톱 QA를 다시 통과했습니다.</td>
+        </tr>
+        <tr>
+          <th>핵심 방향</th>
+          <td>클릭해서 왁스가 깨지고, 깨진 뒤 말랑한 민트 속살과 분홍 왁스 조각이 드러납니다. 다시하기로 새 왁뿌볼을 시작합니다.</td>
+        </tr>
+        <tr>
+          <th>다음 작업</th>
+          <td>배포 전 실제 광고 계정, 퍼블리셔 코드, 사용 반응 분석 도구를 확정합니다.</td>
+        </tr>
+        <tr>
+          <th>대기 중</th>
+          <td class="todo">정적 호스팅 배포, 광고 계정 연결, 실제 사용자 반응 확인</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
