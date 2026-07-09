@@ -68,11 +68,7 @@ const messages = {
   broken: "빠각!",
 };
 
-const soundPaths = {
-  crack: ["./assets/sounds/crack-1.mp3"],
-  break: ["./assets/sounds/crack-2.mp3"],
-  squish: ["./assets/sounds/squish-1.mp3"],
-};
+let audioContext;
 
 function pick(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -90,17 +86,99 @@ function formatCounter(game) {
   return `${game.cracks} / ${MAX_CRACKS}`;
 }
 
+function getAudioContext() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    return null;
+  }
+
+  if (!audioContext) {
+    audioContext = new AudioContextClass();
+  }
+
+  return audioContext;
+}
+
+function makeNoiseBuffer(context, seconds) {
+  const length = Math.max(1, Math.floor(context.sampleRate * seconds));
+  const buffer = context.createBuffer(1, length, context.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let i = 0; i < length; i += 1) {
+    const fade = 1 - i / length;
+    data[i] = (Math.random() * 2 - 1) * fade;
+  }
+
+  return buffer;
+}
+
+function playTone(context, start, frequency, duration, volume, type = "triangle") {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(frequency, start);
+  oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, frequency * 0.42), start + duration);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + 0.006);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+  oscillator.start(start);
+  oscillator.stop(start + duration + 0.02);
+}
+
+function playFilteredNoise(context, start, duration, volume, frequency) {
+  const source = context.createBufferSource();
+  const filter = context.createBiquadFilter();
+  const gain = context.createGain();
+
+  source.buffer = makeNoiseBuffer(context, duration);
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(frequency, start);
+  filter.Q.setValueAtTime(7, start);
+  gain.gain.setValueAtTime(volume, start);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(context.destination);
+  source.start(start);
+}
+
 function playSound(kind) {
-  const paths = soundPaths[kind];
-  if (!paths) {
+  const context = getAudioContext();
+  if (!context) {
     return;
   }
 
-  const audio = new Audio(pick(paths));
-  audio.volume = kind === "squish" ? 0.55 : 0.72;
-  audio.play().catch(() => {
-    logEvent("sound-blocked", { kind });
-  });
+  if (context.state === "suspended") {
+    context.resume().catch(() => {
+      logEvent("sound-blocked", { kind });
+    });
+  }
+
+  const now = context.currentTime;
+  if (kind === "squish") {
+    playTone(context, now, 180, 0.12, 0.12, "sine");
+    playTone(context, now + 0.025, 90, 0.15, 0.08, "sine");
+    playFilteredNoise(context, now, 0.11, 0.07, 680);
+    return;
+  }
+
+  const hitCount = kind === "break" ? 4 : 2;
+  for (let i = 0; i < hitCount; i += 1) {
+    const offset = i * 0.022 + Math.random() * 0.006;
+    playTone(context, now + offset, 1800 - i * 190, 0.045, kind === "break" ? 0.16 : 0.11, "square");
+    playFilteredNoise(context, now + offset, 0.052, kind === "break" ? 0.13 : 0.08, 2600 - i * 220);
+  }
+
+  playTone(context, now + 0.018, kind === "break" ? 138 : 180, 0.08, kind === "break" ? 0.12 : 0.07, "triangle");
 }
 
 export function initApp(root = document) {

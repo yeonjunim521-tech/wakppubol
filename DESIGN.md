@@ -2,7 +2,7 @@
 
 ## 1. Atmosphere & Identity
 
-왁뿌볼은 손가락으로 누르는 촉감 장난감처럼 가볍고 즉각적이어야 한다. 방향은 진짜 왁스 캔디/코팅볼을 기본으로 하고, 깨진 뒤에는 말랑 젤리 장난감의 눌림감을 섞는다. 흰 갤러리 같은 무대 위에 분홍 왁스 공이 실제 물체처럼 놓여 있고, 표면에는 반투명 왁스의 림 라이트, 미세한 결, 바닥 접촉 그림자가 보여야 한다. 사용자가 기억할 장면은 탭할 때마다 껍질이 점차 눌리고 갈라지다가, 일곱 번째 탭에서 두꺼운 왁스 껍질이 벌어지고 민트색 말랑 속살이 드러나는 순간이다.
+왁뿌볼은 손가락으로 누르는 촉감 장난감처럼 가볍고 즉각적이어야 한다. 방향은 YouTube Shorts 레퍼런스처럼 버터색 게임 맵, 두꺼운 검정 외곽선 HUD, 크림색 반투명 왁스 코팅, 짧은 고음 팝 사운드를 기본으로 한다. 깨진 뒤에는 파스텔 블루 말랑 젤리 속살이 드러난다. 사용자가 기억할 장면은 탭할 때마다 얇은 왁스 껍질이 틱틱 갈라지다가, 일곱 번째 탭에서 크림색 껍질 조각이 튀고 말랑한 속이 드러나는 순간이다.
 
 ## 2. Color
 
@@ -10,29 +10,29 @@
 
 | Role | Token | Light | Dark | Usage |
 |------|-------|-------|------|-------|
-| Surface/primary | --surface-primary | #FFFDF7 | #17130F | Main app canvas |
-| Surface/secondary | --surface-secondary | #FFFFFF | #241F1A | Stage and ad surfaces |
-| Surface/warm | --surface-warm | #FFF1B8 | #352A18 | Warm radial background |
+| Surface/primary | --surface-primary | #FFF8D7 | #17130F | Main app canvas |
+| Surface/secondary | --surface-secondary | #FFFEF2 | #241F1A | Stage and ad surfaces |
+| Surface/warm | --surface-warm | #FFE36D | #352A18 | Butter-map radial background |
 | Text/primary | --text-primary | #17130F | #FFFDF7 | Headlines and controls |
-| Text/secondary | --text-secondary | #696157 | #CFC6BA | Status and secondary text |
+| Text/secondary | --text-secondary | #6E6046 | #CFC6BA | Status and secondary text |
 | Border/default | --border-default | #17130F | #FFFDF7 | Strong control borders |
-| Border/subtle | --border-subtle | #D8CDBF | #4A4037 | Ad slots and dividers |
-| Accent/wax | --accent-wax | #FF7CA8 | #FF9BBD | Wax ball body |
-| Accent/wax-shadow | --accent-wax-shadow | #E94F89 | #C93470 | Wax ball depth |
-| Accent/wax-deep | --accent-wax-deep | #B92566 | #85204D | Deep occlusion under wax |
-| Accent/wax-rim | --accent-wax-rim | #FFD2E2 | #FFB5D2 | Translucent wax rim |
-| Accent/wax-glint | --accent-wax-glint | #FFF7FB | #FFE6F2 | Wax highlight |
-| Accent/wax-soft | --accent-wax-soft | #FFC5DC | #FFB0D0 | Wax secondary spot |
-| Accent/inside | --accent-inside | #7DDDF5 | #8BE6F7 | Squish inside |
-| Accent/inside-shadow | --accent-inside-shadow | #4FC2D1 | #3195A4 | Squish depth spot |
-| Accent/inside-glint | --accent-inside-glint | #EFFCFF | #DDF9FF | Squish highlight |
-| Accent/mint | --accent-mint | #89E8C9 | #70DDB8 | Reset button and highlights |
-| Accent/mint-hover | --accent-mint-hover | #9FF1D7 | #89E8C9 | Reset hover |
-| Accent/lemon | --accent-lemon | #FFE66D | #F7D845 | Break burst |
-| Accent/crack | --accent-crack | #5B2840 | #341827 | Crack lines |
-| Accent/crack-edge | --accent-crack-edge | #FFB9D1 | #FF94BC | Raised wax lip beside cracks |
-| Atmosphere/pink | --atmosphere-pink | #FFE8F0 | #3D2630 | Page radial background |
-| Atmosphere/mint | --atmosphere-mint | #EAFCF7 | #1C3932 | Page radial background |
+| Border/subtle | --border-subtle | #E1C996 | #4A4037 | Ad slots and dividers |
+| Accent/wax | --accent-wax | #FFF1A8 | #FFE7A0 | Cream wax shell body |
+| Accent/wax-shadow | --accent-wax-shadow | #F4B64D | #C93470 | Wax shell depth |
+| Accent/wax-deep | --accent-wax-deep | #C97824 | #85204D | Deep occlusion under wax |
+| Accent/wax-rim | --accent-wax-rim | #FFF9D8 | #FFE6BA | Translucent wax rim |
+| Accent/wax-glint | --accent-wax-glint | #FFFEF7 | #FFF7E2 | Wax highlight |
+| Accent/wax-soft | --accent-wax-soft | #FFD4C5 | #FFC5DC | Pastel wax secondary spot |
+| Accent/inside | --accent-inside | #9EDAF7 | #8BE6F7 | Squish inside |
+| Accent/inside-shadow | --accent-inside-shadow | #6BAED4 | #3195A4 | Squish depth spot |
+| Accent/inside-glint | --accent-inside-glint | #F2FEFF | #DDF9FF | Squish highlight |
+| Accent/mint | --accent-mint | #FF9FAB | #70DDB8 | Reset button and highlights |
+| Accent/mint-hover | --accent-mint-hover | #FFB2BD | #89E8C9 | Reset hover |
+| Accent/lemon | --accent-lemon | #FFF071 | #F7D845 | HUD counter and break burst |
+| Accent/crack | --accent-crack | #3B2518 | #341827 | Crack lines |
+| Accent/crack-edge | --accent-crack-edge | #FFF1C3 | #FF94BC | Raised wax lip beside cracks |
+| Atmosphere/pink | --atmosphere-pink | #FFD0DC | #3D2630 | Page radial background |
+| Atmosphere/mint | --atmosphere-mint | #DFF6FF | #1C3932 | Page radial background |
 
 ### Rules
 
@@ -109,12 +109,20 @@ All spacing derives from 4px.
 - **Accessibility**: native button, visible focus ring, Korean aria-label
 - **Motion**: press squash, progressive crack reveal, shell-chip lift, squish pulse; transform and opacity only
 
+### Counter HUD
+- **Structure**: thick black-outlined yellow pill, visually similar to the reference Shorts game HUD
+- **Variants**: wax count, squish count
+- **Spacing**: min-height 48px, responsive min-width
+- **States**: text updates only
+- **Accessibility**: mirrored into hidden `role="status"` live region
+- **Motion**: no independent motion; the ball motion carries the feedback
+
 ### Reset Button
 - **Structure**: native button
 - **Variants**: default
 - **Spacing**: min-height 48px, pill radius
 - **States**: default, hover, active, focus
-- **Accessibility**: high contrast black text on mint
+- **Accessibility**: high contrast black text on pink
 - **Motion**: small press transform
 
 ### Ad Slot
@@ -143,6 +151,14 @@ All spacing derives from 4px.
 - Pointer interactions use Pointer Events for tap and mouse parity.
 - 말랑이는 5번 누르면 자동으로 새 왁뿌볼 상태로 돌아간다.
 
+### Sound
+
+- Use procedural Web Audio instead of copying reference audio.
+- Crack taps use 2 short high-frequency square ticks plus filtered noise and a tiny low pop.
+- Final break uses 4 staggered ticks, louder filtered shell noise, and a lower pop.
+- Squish uses a low sine bend plus muted filtered noise.
+- Sound must start only from user interaction and fail silently if browser audio is unavailable.
+
 ## 7. Depth & Surface
 
 ### Strategy
@@ -153,22 +169,23 @@ Use mixed depth: the page uses soft radial backgrounds, the toy uses inset highl
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| --material-contact-strong | rgb(80 35 58 / 0.34) | Floor contact shadow core |
-| --material-contact-soft | rgb(80 35 58 / 0.17) | Floor contact shadow falloff |
+| --material-contact-strong | rgb(79 51 15 / 0.34) | Floor contact shadow core |
+| --material-contact-soft | rgb(79 51 15 / 0.17) | Floor contact shadow falloff |
 | --material-white-strong | rgb(255 255 255 / 0.78) | Wax specular glint |
 | --material-white-high | rgb(255 255 255 / 0.54) | Surface sheen |
 | --material-white-mid | rgb(255 255 255 / 0.34) | Gel highlight and edge |
 | --material-white-soft | rgb(255 255 255 / 0.24) | Inner rim light |
 | --material-white-wax-fill | rgb(255 255 255 / 0.20) | Wax volume fill light |
 | --material-white-faint | rgb(255 255 255 / 0.12) | Grain |
-| --material-wax-ambient | rgb(112 21 68 / 0.16) | Wax ambient occlusion |
-| --material-wax-deep | rgb(122 23 72 / 0.30) | Wax inner depth |
-| --material-wax-shadow | rgb(108 47 77 / 0.30) | Wax cast shadow |
-| --material-wax-lip | rgb(255 202 219 / 0.42) | Raised crack lip |
-| --material-crack-shadow | rgb(88 22 56 / 0.28) | Crack groove shadow |
+| --material-wax-ambient | rgb(177 118 28 / 0.16) | Wax ambient occlusion |
+| --material-wax-deep | rgb(166 95 18 / 0.30) | Wax inner depth |
+| --material-wax-shadow | rgb(130 84 25 / 0.30) | Wax cast shadow |
+| --material-wax-lip | rgb(255 245 196 / 0.58) | Raised crack lip |
+| --material-crack-shadow | rgb(62 38 19 / 0.32) | Crack groove shadow |
 | --material-inside-deep | rgb(21 98 111 / 0.28) | Squish inner depth |
 | --material-inside-shadow | rgb(60 115 120 / 0.24) | Squish cast shadow |
 | --material-ad-surface | rgb(255 255 255 / 0.74) | Empty ad slot surface |
+| --material-hud-shadow | rgb(23 19 15 / 0.12) | Yellow HUD pill lower edge |
 
 | Level | Value | Usage |
 |-------|-------|-------|

@@ -1,5 +1,7 @@
 # Sound Sources
 
+The current app uses procedural Web Audio in `app.js` for the wax crack, final break, and squish sounds. The generated sounds are inspired by the short, dry high-frequency pop/tick character in the user-supplied Shorts reference, but do not copy or sample that video's audio.
+
 - `crack-1.mp3`: Mixkit "Plastic bubble click", source page https://mixkit.co/free-sound-effects/plastic/, asset preview https://assets.mixkit.co/active_storage/sfx/1124/1124-preview.mp3, license page https://mixkit.co/license/. It qualifies because Mixkit sound effects are available under the Mixkit Sound Effects Free License for commercial and personal projects without attribution.
 - `crack-2.mp3`: Mixkit "Hard pop click", source page https://mixkit.co/free-sound-effects/pop/, asset preview https://assets.mixkit.co/active_storage/sfx/2364/2364-preview.mp3, license page https://mixkit.co/license/. It qualifies because Mixkit sound effects are available under the Mixkit Sound Effects Free License for commercial and personal projects without attribution.
 - `squish-1.mp3`: Mixkit "Soap dispenser press short squish", source page https://mixkit.co/free-sound-effects/squish/, asset preview https://assets.mixkit.co/active_storage/sfx/1884/1884-preview.mp3, license page https://mixkit.co/license/. It qualifies because Mixkit sound effects are available under the Mixkit Sound Effects Free License for commercial and personal projects without attribution.
