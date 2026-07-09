@@ -1,4 +1,5 @@
 export const MAX_CRACKS = 7;
+export const MAX_SQUISHES = 5;
 
 const initialPhase = "wax";
 const squishPhase = "squish";
@@ -30,14 +31,19 @@ export function clickWax(game, now = Date.now()) {
   };
 }
 
-export function clickSquish(game) {
+export function clickSquish(game, now = Date.now()) {
   if (game.phase !== squishPhase) {
     return game;
   }
 
+  const squishCount = game.squishCount + 1;
+  if (squishCount >= MAX_SQUISHES) {
+    return resetGame(game, now);
+  }
+
   return {
     ...game,
-    squishCount: game.squishCount + 1,
+    squishCount,
   };
 }
 
@@ -78,7 +84,7 @@ function logEvent(type, data = {}) {
 
 function formatCounter(game) {
   if (game.phase === squishPhase) {
-    return `말랑 ${game.squishCount}번`;
+    return `말랑 ${game.squishCount} / ${MAX_SQUISHES}`;
   }
 
   return `${game.cracks} / ${MAX_CRACKS}`;
@@ -103,6 +109,7 @@ export function initApp(root = document) {
   const reset = root.querySelector("[data-reset]");
   const status = root.querySelector("[data-status]");
   const counter = root.querySelector("[data-counter]");
+  const liveStatus = root.querySelector("[data-live-status]");
 
   if (!app || !ball || !reset || !status || !counter) {
     return;
@@ -112,10 +119,18 @@ export function initApp(root = document) {
 
   function render(message = "클릭해서 왁스를 깨보세요") {
     app.dataset.phase = game.phase;
+    app.dataset.cracks = String(game.cracks);
     app.dataset.crackLevel = String(getCrackLevel(game));
-    ball.style.setProperty("--squish-scale", game.squishCount % 2 === 0 ? "1" : "0.93");
+    app.dataset.squishLevel = String(Math.min(game.squishCount, MAX_SQUISHES));
+    ball.style.setProperty("--damage", String(game.cracks / MAX_CRACKS));
+    ball.style.setProperty("--squish-scale", game.squishCount % 2 === 0 ? "1.03" : "0.9");
+    ball.style.setProperty("--squish-tilt", game.squishCount % 2 === 0 ? "-3deg" : "4deg");
+    const countText = formatCounter(game);
     status.textContent = message;
-    counter.textContent = formatCounter(game);
+    counter.textContent = countText;
+    if (liveStatus) {
+      liveStatus.textContent = `${message}. ${countText}`;
+    }
   }
 
   function pressBall() {
@@ -129,10 +144,12 @@ export function initApp(root = document) {
       return;
     }
 
+    const before = game.phase;
     game = clickSquish(game);
     playSound("squish");
-    render(pick(messages.squish));
-    logEvent("squish", { squishCount: game.squishCount });
+    const autoReset = before === squishPhase && game.phase === initialPhase;
+    render(autoReset ? "새 왁뿌볼 준비" : pick(messages.squish));
+    logEvent(autoReset ? "auto-reset" : "squish", { squishCount: game.squishCount, plays: game.plays });
   }
 
   function resetBall() {

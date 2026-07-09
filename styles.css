@@ -46,6 +46,9 @@
   --material-inside-deep: rgb(21 98 111 / 0.28);
   --material-inside-shadow: rgb(60 115 120 / 0.24);
   --material-ad-surface: rgb(255 255 255 / 0.74);
+  --damage: 0;
+  --squish-scale: 1;
+  --squish-tilt: 0deg;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -75,6 +78,18 @@ body {
 
 button {
   font: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .app {
@@ -193,7 +208,8 @@ h1 {
     inset 0 0 0 2px var(--material-white-low),
     0 24px 48px var(--material-wax-shadow);
   overflow: hidden;
-  transition: opacity 160ms ease, transform 140ms ease, filter 160ms ease;
+  transform: scale(calc(1 - (var(--damage) * 0.035))) rotate(calc(var(--damage) * -3deg));
+  transition: opacity 220ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1), filter 180ms ease;
 }
 
 .wax::before,
@@ -234,7 +250,23 @@ h1 {
     0 18px 34px var(--material-inside-shadow);
   overflow: hidden;
   transform: scale(0.78);
-  transition: opacity 180ms ease, transform 160ms ease;
+  transition: opacity 180ms ease, transform 190ms cubic-bezier(0.2, 0.8, 0.2, 1.2);
+}
+
+.fracture-web {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background:
+    linear-gradient(86deg, transparent 0 49%, var(--accent-crack) 50% 51%, transparent 52%),
+    linear-gradient(31deg, transparent 0 47%, var(--accent-crack-edge) 48% 49%, var(--accent-crack) 50% 51%, transparent 52%),
+    linear-gradient(139deg, transparent 0 48%, var(--accent-crack) 49% 50%, transparent 51%);
+  clip-path: polygon(45% 6%, 56% 8%, 52% 37%, 68% 29%, 76% 38%, 55% 49%, 69% 70%, 60% 76%, 50% 55%, 38% 84%, 29% 78%, 43% 50%, 21% 43%, 27% 34%, 45% 39%);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.72) translateZ(11px);
+  transition: opacity 160ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 4;
 }
 
 .crack {
@@ -249,6 +281,7 @@ h1 {
     inset 1px 0 1px var(--material-white-low);
   opacity: 0;
   transform-origin: center;
+  transition: opacity 150ms ease, transform 190ms cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 3;
 }
 
@@ -295,6 +328,7 @@ h1 {
     inset -8px -8px 14px var(--material-wax-deep-soft),
     0 10px 18px var(--material-chip-shadow);
   opacity: 0;
+  transition: opacity 210ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
   z-index: 4;
 }
@@ -315,6 +349,25 @@ h1 {
   bottom: 18%;
   left: 41%;
   transform: rotate(8deg) translate3d(0, 18px, 12px);
+}
+
+.chip-d {
+  top: 34%;
+  left: 54%;
+  width: 16%;
+  height: 11%;
+  transform: rotate(68deg) translate3d(6px, -8px, 12px);
+}
+
+.squish-pulse {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--material-white-mid) 0 22%, transparent 58%);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.7) translateZ(14px);
+  z-index: 5;
 }
 
 .burst {
@@ -351,19 +404,102 @@ h1 {
   opacity: 0.9;
 }
 
+[data-cracks="1"] .wax {
+  transform: scale(0.995) rotate(-0.5deg);
+}
+
+[data-cracks="2"] .wax {
+  transform: scale(0.986) rotate(-1deg);
+}
+
+[data-cracks="3"] .wax {
+  transform: scale(0.974) rotate(-1.6deg);
+}
+
+[data-cracks="4"] .wax {
+  transform: scale(0.96) rotate(-2.2deg);
+}
+
+[data-cracks="5"] .wax,
+[data-cracks="6"] .wax {
+  transform: scale(0.946) rotate(-2.8deg);
+}
+
+[data-cracks="1"] .c1,
+[data-cracks="2"] .c2,
+[data-cracks="3"] .c3,
+[data-cracks="4"] .c4,
+[data-cracks="5"] .fracture-web,
+[data-cracks="6"] .fracture-web {
+  animation: crack-pop 210ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-cracks="4"] .fracture-web,
+[data-cracks="5"] .fracture-web,
+[data-cracks="6"] .fracture-web {
+  opacity: 0.26;
+  transform: scale(0.9) translateZ(11px);
+}
+
+[data-cracks="5"] .chip-a,
+[data-cracks="6"] .chip-a {
+  opacity: 0.46;
+  transform: rotate(-28deg) translate3d(-8px, -5px, 12px);
+}
+
+[data-cracks="6"] .chip-b {
+  opacity: 0.52;
+  transform: rotate(28deg) translate3d(8px, 4px, 12px);
+}
+
 [data-phase="squish"] .wax {
-  opacity: 0.28;
+  opacity: 0.22;
   filter: saturate(0.8);
-  transform: scale(1.08) rotate(8deg) translateZ(10px);
+  transform: scale(1.12) rotate(9deg) translate3d(5px, -4px, 10px);
 }
 
 [data-phase="squish"] .inside {
   opacity: 1;
-  transform: scale(var(--squish-scale, 1)) translateZ(6px);
+  transform: scale(var(--squish-scale, 1)) rotate(var(--squish-tilt)) translateZ(6px);
 }
 
 [data-phase="squish"] .shell-chip {
   opacity: 1;
+}
+
+[data-phase="squish"] .chip-a {
+  transform: rotate(-31deg) translate3d(-20px, -13px, 12px);
+}
+
+[data-phase="squish"] .chip-b {
+  transform: rotate(36deg) translate3d(22px, 8px, 12px);
+}
+
+[data-phase="squish"] .chip-c {
+  transform: rotate(10deg) translate3d(0, 21px, 12px);
+}
+
+[data-phase="squish"] .chip-d {
+  opacity: 0.72;
+  transform: rotate(66deg) translate3d(10px, -11px, 12px);
+}
+
+[data-squish-level="1"] .inside,
+[data-squish-level="2"] .inside,
+[data-squish-level="3"] .inside,
+[data-squish-level="4"] .inside {
+  animation: squish-press 260ms cubic-bezier(0.2, 0.8, 0.2, 1.2);
+}
+
+[data-squish-level="1"] .squish-pulse,
+[data-squish-level="2"] .squish-pulse,
+[data-squish-level="3"] .squish-pulse,
+[data-squish-level="4"] .squish-pulse {
+  animation: squish-pulse 330ms ease-out;
+}
+
+[data-squish-level="4"] .inside {
+  filter: saturate(1.14) contrast(1.03);
 }
 
 [data-phase="squish"] .burst {
@@ -428,6 +564,48 @@ h1 {
   100% {
     opacity: 0;
     transform: translateX(-50%) scale(1) translateY(-18px);
+  }
+}
+
+@keyframes crack-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) translateZ(8px);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.08) translateZ(12px);
+  }
+
+  100% {
+    transform: scale(1) translateZ(8px);
+  }
+}
+
+@keyframes squish-press {
+  0% {
+    transform: scale(1) rotate(0deg) translateZ(6px);
+  }
+
+  42% {
+    transform: scale(0.88, 1.08) rotate(var(--squish-tilt)) translateZ(6px);
+  }
+
+  100% {
+    transform: scale(var(--squish-scale, 1)) rotate(var(--squish-tilt)) translateZ(6px);
+  }
+}
+
+@keyframes squish-pulse {
+  0% {
+    opacity: 0.44;
+    transform: scale(0.58) translateZ(14px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.28) translateZ(14px);
   }
 }
 

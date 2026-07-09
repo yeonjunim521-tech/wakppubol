@@ -2,7 +2,7 @@
 
 ## 1. Atmosphere & Identity
 
-왁뿌볼은 손가락으로 누르는 촉감 장난감처럼 가볍고 즉각적이어야 한다. 흰 갤러리 같은 무대 위에 분홍 왁스 공이 실제 물체처럼 놓여 있고, 표면에는 반투명 왁스의 림 라이트, 미세한 결, 바닥 접촉 그림자가 보여야 한다. 사용자가 기억할 장면은 일곱 번째 탭에서 두꺼운 왁스 껍질이 갈라지고 민트색 말랑 속살이 드러나는 순간이다.
+왁뿌볼은 손가락으로 누르는 촉감 장난감처럼 가볍고 즉각적이어야 한다. 방향은 진짜 왁스 캔디/코팅볼을 기본으로 하고, 깨진 뒤에는 말랑 젤리 장난감의 눌림감을 섞는다. 흰 갤러리 같은 무대 위에 분홍 왁스 공이 실제 물체처럼 놓여 있고, 표면에는 반투명 왁스의 림 라이트, 미세한 결, 바닥 접촉 그림자가 보여야 한다. 사용자가 기억할 장면은 탭할 때마다 껍질이 점차 눌리고 갈라지다가, 일곱 번째 탭에서 두꺼운 왁스 껍질이 벌어지고 민트색 말랑 속살이 드러나는 순간이다.
 
 ## 2. Color
 
@@ -103,11 +103,11 @@ All spacing derives from 4px.
 
 ### Ball Button
 - **Structure**: native button with layered spans for wax, cracks, inside, burst
-- **Variants**: crack levels 0 to 5, squish phase
+- **Variants**: exact crack counts 0 to 7, crack levels 0 to 5, squish phase, squish levels 0 to 5
 - **Spacing**: fixed aspect ratio with responsive width
 - **States**: default, active, focus
 - **Accessibility**: native button, visible focus ring, Korean aria-label
-- **Motion**: transform and opacity only
+- **Motion**: press squash, progressive crack reveal, shell-chip lift, squish pulse; transform and opacity only
 
 ### Reset Button
 - **Structure**: native button
@@ -134,12 +134,14 @@ All spacing derives from 4px.
 | Micro | 90ms | ease-out | Button press |
 | Standard | 160ms | ease | Crack and squish transitions |
 | Emphasis | 520ms | cubic-bezier(0.16, 1, 0.3, 1) | Break burst |
+| Reset loop | 720ms | cubic-bezier(0.22, 1, 0.36, 1) | Final squish returning to a new ball |
 
 ### Rules
 
 - Animate only `transform` and `opacity`.
 - Respect `prefers-reduced-motion` by disabling non-essential animation.
 - Pointer interactions use Pointer Events for tap and mouse parity.
+- 말랑이는 5번 누르면 자동으로 새 왁뿌볼 상태로 돌아간다.
 
 ## 7. Depth & Surface
 

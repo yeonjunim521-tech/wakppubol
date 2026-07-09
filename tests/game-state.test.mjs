@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   MAX_CRACKS,
+  MAX_SQUISHES,
   clickSquish,
   clickWax,
   createGame,
@@ -55,6 +56,29 @@ test("squish clicks only count after wax has broken", () => {
 
   assert.equal(unchanged.squishCount, 0);
   assert.equal(squished.squishCount, 1);
+});
+
+test("squish clicks reset to a fresh wax ball at the max squish count", () => {
+  let game = createGame(100);
+
+  for (let i = 0; i < MAX_CRACKS; i += 1) {
+    game = clickWax(game, 200 + i);
+  }
+
+  for (let i = 0; i < MAX_SQUISHES - 1; i += 1) {
+    game = clickSquish(game, 300 + i);
+  }
+
+  assert.equal(game.phase, "squish");
+  assert.equal(game.squishCount, MAX_SQUISHES - 1);
+
+  game = clickSquish(game, 400);
+
+  assert.equal(game.phase, "wax");
+  assert.equal(game.cracks, 0);
+  assert.equal(game.squishCount, 0);
+  assert.equal(game.plays, 1);
+  assert.equal(game.startedAt, 400);
 });
 
 test("reset starts a fresh wax ball and increments play count", () => {
