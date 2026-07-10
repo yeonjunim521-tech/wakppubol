@@ -162,3 +162,12 @@ test("six randomized wax and squish design themes are styled", async () => {
     assert.match(css, new RegExp(`\\[data-design="${design}"\\]`));
   }
 });
+
+test("damaged wax keeps a round silhouette and fragments inherit its theme", async () => {
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  const lateDamage = css.match(/\[data-cracks="4"\] \.wax[\s\S]*?\[data-cracks="5"\] \.inside/)?.[0] ?? "";
+  assert.doesNotMatch(lateDamage, /clip-path:\s*polygon/);
+  assert.doesNotMatch(lateDamage, /var\(--accent-wax(?:-shadow|-deep|-rim|-glint)?\)/);
+  assert.match(css, /\.wax-fragment\s*\{[^}]*fill:\s*var\(--wax-mid\)/s);
+  assert.match(css, /\.wax-fragment\s*\{[^}]*stroke:\s*var\(--wax-light\)/s);
+});

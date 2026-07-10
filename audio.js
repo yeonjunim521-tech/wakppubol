@@ -38,6 +38,20 @@ function randomBetween(min, max) {
   return min + Math.random() * (max - min);
 }
 
+export function getRecordedMix(kind, randomValue = Math.random()) {
+  const value = Math.min(1, Math.max(0, randomValue));
+  if (kind === "squish") {
+    return {
+      playbackRate: 0.96 + value * 0.08,
+      gain: 0.94 + value * 0.1,
+    };
+  }
+  return {
+    playbackRate: 0.94 + value * 0.12,
+    gain: 0.94 + value * 0.14,
+  };
+}
+
 function makeNoiseBuffer(context, seconds, profile = "soft") {
   const length = Math.max(1, Math.floor(context.sampleRate * seconds));
   const buffer = context.createBuffer(1, length, context.sampleRate);
@@ -232,15 +246,10 @@ export function createAudioEngine({ onBlocked = () => {} } = {}) {
     if (recordedBuffer) {
       const source = audioContext.createBufferSource();
       const gain = audioContext.createGain();
+      const mix = getRecordedMix(kind);
       source.buffer = recordedBuffer;
-      source.playbackRate.setValueAtTime(
-        kind === "squish" ? randomBetween(0.92, 1.04) : randomBetween(0.94, 1.06),
-        now,
-      );
-      gain.gain.setValueAtTime(
-        kind === "squish" ? randomBetween(0.72, 0.88) : randomBetween(0.94, 1.08),
-        now,
-      );
+      source.playbackRate.setValueAtTime(mix.playbackRate, now);
+      gain.gain.setValueAtTime(mix.gain, now);
       source.connect(gain);
       gain.connect(master);
       source.start(now);

@@ -77,4 +77,4 @@ All files below are edited derivatives of sounds whose individual Freesound page
 - License: CC0 1.0 Universal
 - License URL: https://creativecommons.org/publicdomain/zero/1.0/
 - Verified: 2026-07-10
-- Edits: extracted three individual soft slime compression events from the public preview, converted to mono 48 kHz 16-bit PCM WAV, high-pass filtered at 45 Hz, gently low-pass filtered at 6.2–7 kHz, reduced gain, and applied short fade-in/fade-out envelopes.
+- Edits: extracted three individual soft slime compression events from the public preview, converted to mono 48 kHz 16-bit PCM WAV, high-pass filtered at 45 Hz, gently low-pass filtered at 6.2–7 kHz, applied short fade-in/fade-out envelopes, and peak-matched the three clips to approximately -2 dBFS for consistent mobile playback.

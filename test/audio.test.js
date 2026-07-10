@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { AUDIO_MANIFEST, createAudioEngine, selectSample } from "../audio.js";
+import { AUDIO_MANIFEST, createAudioEngine, getRecordedMix, selectSample } from "../audio.js";
 
 function makeAudioParam() {
   return {
@@ -75,6 +75,13 @@ test("selection clamps a random value at the upper boundary", () => {
 
 test("squish layers a recorded soft slime sample", () => {
   assert.match(selectSample("squish", 0, 0.5), /squish-/);
+});
+
+test("squish recording is mixed at wax-break loudness", () => {
+  const squish = getRecordedMix("squish", 0);
+  const crack = getRecordedMix("crack", 0);
+  assert.ok(squish.gain >= crack.gain * 0.95);
+  assert.ok(squish.playbackRate >= 0.94);
 });
 
 test("a crack layers short triangle tones beneath every rich burst except the last", () => {
