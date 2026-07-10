@@ -11,6 +11,7 @@ export function createGame(now = Date.now()) {
     phase: initialPhase,
     cracks: 0,
     squishCount: 0,
+    completed: false,
     plays: 0,
     startedAt: now,
     brokenAt: null,
@@ -38,14 +39,10 @@ export function clickSquish(game, now = Date.now()) {
     return game;
   }
 
-  const squishCount = game.squishCount + 1;
-  if (squishCount >= MAX_SQUISHES) {
-    return resetGame(game, now);
-  }
-
   return {
     ...game,
-    squishCount,
+    squishCount: Math.min(MAX_SQUISHES, game.squishCount + 1),
+    completed: game.squishCount + 1 >= MAX_SQUISHES,
   };
 }
 
@@ -122,6 +119,7 @@ export function initApp(root = document) {
     app.dataset.cracks = String(game.cracks);
     app.dataset.crackLevel = String(getCrackLevel(game));
     app.dataset.squishLevel = String(Math.min(game.squishCount, MAX_SQUISHES));
+    app.dataset.completed = String(game.completed);
     ball.style.setProperty("--damage", String(game.cracks / MAX_CRACKS));
     ball.style.setProperty("--squish-scale", game.squishCount % 2 === 0 ? "1.03" : "0.9");
     ball.style.setProperty("--squish-tilt", game.squishCount % 2 === 0 ? "-3deg" : "4deg");
@@ -133,6 +131,7 @@ export function initApp(root = document) {
   }
 
   function pressBall() {
+    if (game.completed) return;
     if (game.phase === initialPhase) {
       const before = game.phase;
       game = clickWax(game);
@@ -143,12 +142,10 @@ export function initApp(root = document) {
       return;
     }
 
-    const before = game.phase;
     game = clickSquish(game);
     playAudio(audio, "squish", game.cracks);
-    const autoReset = before === squishPhase && game.phase === initialPhase;
-    render(autoReset ? "새 왁뿌볼 준비" : pick(messages.squish));
-    logEvent(autoReset ? "auto-reset" : "squish", { squishCount: game.squishCount, plays: game.plays });
+    render(game.completed ? "다시하기를 눌러 새 왁뿌볼을 준비하세요" : pick(messages.squish));
+    logEvent(game.completed ? "complete" : "squish", { squishCount: game.squishCount, plays: game.plays });
   }
 
   function captureImpact(event) {

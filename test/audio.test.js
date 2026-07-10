@@ -77,13 +77,13 @@ test("squish intentionally uses synthesized audio only", () => {
   assert.equal(selectSample("squish", 0, 0.5), null);
 });
 
-test("a crack layers short triangle tones beneath every burst except the last", () => {
+test("a crack layers short triangle tones beneath every rich burst except the last", () => {
   const previousWindow = globalThis.window;
   const context = new FakeAudioContext();
   globalThis.window = { AudioContext: class { constructor() { return context; } } };
   try {
     createAudioEngine().play("crack", 1);
-    assert.equal(context.oscillatorTypes.filter((type) => type === "triangle").length, 2);
+    assert.equal(context.oscillatorTypes.filter((type) => type === "triangle").length, 5);
   } finally {
     globalThis.window = previousWindow;
   }

@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import {
   MAX_CRACKS,
   clickWax,
+  clickSquish,
   createGame,
   getCrackLevel,
   initApp,
@@ -53,6 +54,16 @@ test("pointer coordinates are clamped and normalized to percentages", () => {
 test("crack level remains within zero to five", () => {
   assert.equal(getCrackLevel(createGame(0)), 0);
   assert.equal(getCrackLevel({ ...createGame(0), cracks: 7 }), 5);
+});
+
+test("the fifth squish completes the toy without replacing it", () => {
+  let game = { ...createGame(0), phase: "squish", cracks: MAX_CRACKS };
+  for (let i = 0; i < 5; i += 1) game = clickSquish(game, i + 1);
+
+  assert.equal(game.phase, "squish");
+  assert.equal(game.squishCount, 5);
+  assert.equal(game.completed, true);
+  assert.deepEqual(clickSquish(game, 99), game);
 });
 
 test("pointer and native keyboard clicks each advance exactly once", () => {
@@ -125,4 +136,16 @@ test("successive squish levels alternate animation names", async () => {
   assert.match(css, /\[data-squish-level="2"\][^{]*\.squish-pulse[^\{]*\[data-squish-level="4"\][^{]*\.squish-pulse[^\{]*\{[^}]*animation:\s*squish-pulse-even/s);
   assert.match(css, /@keyframes\s+squish-pulse-odd/);
   assert.match(css, /@keyframes\s+squish-pulse-even/);
+});
+
+test("completed state hides the wax shell and reveals reset only then", async () => {
+  const [html, css] = await Promise.all([
+    readFile(new URL("../index.html", import.meta.url), "utf8"),
+    readFile(new URL("../styles.css", import.meta.url), "utf8"),
+  ]);
+  assert.doesNotMatch(html, /class="burst"/);
+  assert.match(css, /\[data-phase="squish"\] \.wax\s*\{[^}]*opacity:\s*0/s);
+  assert.match(css, /\[data-phase="squish"\] \.fracture-svg\s*\{[^}]*opacity:\s*0/s);
+  assert.match(css, /\.reset\s*\{[^}]*display:\s*none/s);
+  assert.match(css, /\[data-completed="true"\] \.reset\s*\{[^}]*display:\s*block/s);
 });

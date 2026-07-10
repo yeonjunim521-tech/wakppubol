@@ -91,15 +91,15 @@ function playFilteredNoise(context, output, start, duration, volume, frequency, 
 
 function playCrackleBurst(context, output, start, kind) {
   const isBreak = kind === "break";
-  const burstCount = isBreak ? 6 : 3;
+  const burstCount = isBreak ? 9 : 5;
   for (let i = 0; i < burstCount; i += 1) {
     const offset = i * randomBetween(0.006, 0.013) + randomBetween(0, isBreak ? 0.012 : 0.007);
     playFilteredNoise(
       context,
       output,
       start + offset,
-      randomBetween(0.02, isBreak ? 0.065 : 0.038),
-      isBreak ? randomBetween(0.11, 0.18) : randomBetween(0.065, 0.105),
+      randomBetween(0.02, isBreak ? 0.08 : 0.052),
+      isBreak ? randomBetween(0.13, 0.21) : randomBetween(0.08, 0.13),
       randomBetween(isBreak ? 1250 : 1650, isBreak ? 2450 : 3150),
       {
         filterType: i % 2 === 0 ? "highpass" : "bandpass",
@@ -126,13 +126,13 @@ function playCrackleBurst(context, output, start, kind) {
       );
     }
   }
-  playTone(context, output, start + 0.012, isBreak ? 124 : 176, isBreak ? 0.13 : 0.085, isBreak ? 0.075 : 0.045, "sine", {
+  playTone(context, output, start + 0.012, isBreak ? 112 : 158, isBreak ? 0.18 : 0.12, isBreak ? 0.11 : 0.065, "triangle", {
     attack: 0.0028,
     endFrequencyRatio: isBreak ? 0.62 : 0.7,
     releaseTail: 0.018,
   });
   if (isBreak) {
-    playFilteredNoise(context, output, start + 0.024, 0.09, 0.082, 980, {
+    playFilteredNoise(context, output, start + 0.024, 0.14, 0.11, 980, {
       filterType: "bandpass",
       q: 1.4,
       playbackRate: 0.88,
@@ -232,7 +232,7 @@ export function createAudioEngine({ onBlocked = () => {} } = {}) {
       const gain = audioContext.createGain();
       source.buffer = recordedBuffer;
       source.playbackRate.setValueAtTime(randomBetween(0.94, 1.06), now);
-      gain.gain.setValueAtTime(randomBetween(0.72, 0.9), now);
+      gain.gain.setValueAtTime(randomBetween(0.94, 1.08), now);
       source.connect(gain);
       gain.connect(master);
       source.start(now);

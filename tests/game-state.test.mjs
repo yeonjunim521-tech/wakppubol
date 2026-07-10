@@ -58,7 +58,7 @@ test("squish clicks only count after wax has broken", () => {
   assert.equal(squished.squishCount, 1);
 });
 
-test("squish clicks reset to a fresh wax ball at the max squish count", () => {
+test("squish clicks complete the toy at the max squish count", () => {
   let game = createGame(100);
 
   for (let i = 0; i < MAX_CRACKS; i += 1) {
@@ -74,11 +74,11 @@ test("squish clicks reset to a fresh wax ball at the max squish count", () => {
 
   game = clickSquish(game, 400);
 
-  assert.equal(game.phase, "wax");
-  assert.equal(game.cracks, 0);
-  assert.equal(game.squishCount, 0);
-  assert.equal(game.plays, 1);
-  assert.equal(game.startedAt, 400);
+  assert.equal(game.phase, "squish");
+  assert.equal(game.cracks, MAX_CRACKS);
+  assert.equal(game.squishCount, MAX_SQUISHES);
+  assert.equal(game.completed, true);
+  assert.equal(game.plays, 0);
 });
 
 test("reset starts a fresh wax ball and increments play count", () => {
