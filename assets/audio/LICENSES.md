@@ -78,3 +78,14 @@ All files below are edited derivatives of sounds whose individual Freesound page
 - License URL: https://creativecommons.org/publicdomain/zero/1.0/
 - Verified: 2026-07-10
 - Edits: extracted three individual soft slime compression events from the public preview, converted to mono 48 kHz 16-bit PCM WAV, high-pass filtered at 45 Hz, gently low-pass filtered at 6.2–7 kHz, applied short fade-in/fade-out envelopes, and peak-matched the three clips to approximately -2 dBFS for consistent mobile playback.
+
+## wax-tap-1.wav through wax-tap-5.wav
+
+- Source page: https://freesound.org/s/798008/
+- Preview used: https://cdn.freesound.org/previews/798/798008_15584536-hq.mp3
+- Original title: Crackling / Paper Bag
+- Creator: deleted_user_15584536
+- License: CC0 1.0 Universal
+- License URL: https://creativecommons.org/publicdomain/zero/1.0/
+- Verified: 2026-07-10
+- Edits: extracted five short crackling events from the user-selected source, converted to mono 48 kHz 16-bit PCM WAV, high-pass filtered at 55 Hz, low-pass filtered at 9 kHz, applied short fade envelopes, and loudness-normalized with a -2 dB true-peak ceiling.

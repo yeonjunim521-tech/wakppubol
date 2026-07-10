@@ -371,6 +371,8 @@ h1 {
 }
 
 .wax-fragment {
+  --fall-x: 0px;
+  --fall-y: 28px;
   fill: var(--wax-mid);
   stroke: var(--wax-light);
   stroke-width: 0.8;
@@ -379,26 +381,26 @@ h1 {
   transform-box: fill-box;
   transform-origin: center;
   transform: translate(0, 0) rotate(0deg);
-  transition: opacity 150ms ease, transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.32, 0, 0.8, 0.2);
+  animation-fill-mode: forwards;
 }
 
-.fragment-a { --fragment-x: -5px; --fragment-y: -3px; --fragment-rotate: -8deg; }
-.fragment-b { --fragment-x: 6px; --fragment-y: -4px; --fragment-rotate: 11deg; }
-.fragment-c { --fragment-x: -9px; --fragment-y: 3px; --fragment-rotate: -14deg; }
-.fragment-d { --fragment-x: 10px; --fragment-y: 4px; --fragment-rotate: 13deg; }
-.fragment-e { --fragment-x: -6px; --fragment-y: 10px; --fragment-rotate: -10deg; }
-.fragment-f { --fragment-x: 7px; --fragment-y: 11px; --fragment-rotate: 15deg; }
-.fragment-g { --fragment-x: -8px; --fragment-y: -12px; --fragment-rotate: -17deg; }
-.fragment-h { --fragment-x: 9px; --fragment-y: -11px; --fragment-rotate: 19deg; }
+.fragment-a { --fall-x: -5px; --fall-y: 28px; --fragment-rotate: -12deg; }
+.fragment-b { --fall-x: 6px; --fall-y: 34px; --fragment-rotate: 16deg; }
+.fragment-c { --fall-x: -8px; --fall-y: 39px; --fragment-rotate: -19deg; }
+.fragment-d { --fall-x: 8px; --fall-y: 45px; --fragment-rotate: 18deg; }
+.fragment-e { --fall-x: -6px; --fall-y: 51px; --fragment-rotate: -15deg; }
+.fragment-f { --fall-x: 7px; --fall-y: 58px; --fragment-rotate: 21deg; }
+.fragment-g { --fall-x: -7px; --fall-y: 62px; --fragment-rotate: -24deg; }
+.fragment-h { --fall-x: 8px; --fall-y: 67px; --fragment-rotate: 25deg; }
 
 [data-cracks="2"] .wax-fragment[data-stage="2"],
-[data-cracks="3"] .wax-fragment:is([data-stage="2"], [data-stage="3"]),
-[data-cracks="4"] .wax-fragment:not([data-stage="5"]):not([data-stage="6"]),
-[data-cracks="5"] .wax-fragment:not([data-stage="6"]),
-[data-cracks="6"] .wax-fragment,
-[data-cracks="7"] .wax-fragment {
-  opacity: 0.92;
-  transform: translate(var(--fragment-x), var(--fragment-y)) rotate(var(--fragment-rotate));
+[data-cracks="3"] .wax-fragment[data-stage="3"],
+[data-cracks="4"] .wax-fragment[data-stage="4"],
+[data-cracks="5"] .wax-fragment[data-stage="5"],
+[data-cracks="6"] .wax-fragment[data-stage="6"] {
+  animation-name: flake-fall;
 }
 
 .impact-bloom {
@@ -581,6 +583,23 @@ h1 {
   }
 }
 
+@keyframes flake-fall {
+  0% {
+    opacity: 0.96;
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(0, 2px) rotate(2deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--fall-x), var(--fall-y)) rotate(var(--fragment-rotate));
+  }
+}
+
 @keyframes impact-bloom-even {
   0% {
     opacity: 0.72;
@@ -660,6 +679,6 @@ h1 {
   }
 
   [data-cracks] .wax-fragment {
-    transform: rotate(var(--fragment-rotate));
+    transform: translate(0, var(--fall-y)) rotate(var(--fragment-rotate));
   }
 }

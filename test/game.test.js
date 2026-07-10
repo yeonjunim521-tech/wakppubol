@@ -177,3 +177,11 @@ test("damaged wax keeps a round silhouette and fragments inherit its theme", asy
   assert.match(css, /\.wax-fragment\s*\{[^}]*fill:\s*var\(--wax-mid\)/s);
   assert.match(css, /\.wax-fragment\s*\{[^}]*stroke:\s*var\(--wax-light\)/s);
 });
+
+test("detached wax fragments only accelerate downward under gravity", async () => {
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  assert.doesNotMatch(css, /--fragment-y:\s*-/);
+  assert.match(css, /@keyframes\s+flake-fall/);
+  assert.match(css, /@keyframes\s+flake-fall[\s\S]*100%\s*\{[^}]*translate\([^,]+,\s*var\(--fall-y\)/s);
+  assert.match(css, /\.wax-fragment\s*\{[^}]*animation-timing-function:\s*cubic-bezier\(0\.32,\s*0,\s*0\.8,\s*0\.2\)/s);
+});

@@ -66,11 +66,13 @@ test("every recorded sample is a local asset", () => {
 
 test("early and late cracks use the same crunchy bank", () => {
   assert.equal(selectSample("crack", 1, 0), selectSample("crack", 6, 0));
+  assert.match(selectSample("crack", 1, 0), /wax-tap-/);
+  assert.match(selectSample("break", 7, 0.5), /wax-tap-/);
 });
 
 test("selection clamps a random value at the upper boundary", () => {
   const selected = selectSample("break", 7, 1);
-  assert.equal(selected, AUDIO_MANIFEST.break.at(-1));
+  assert.equal(selected, AUDIO_MANIFEST.waxTap.at(-1));
 });
 
 test("squish layers a recorded soft slime sample", () => {

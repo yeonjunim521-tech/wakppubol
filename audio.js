@@ -1,15 +1,10 @@
 export const AUDIO_MANIFEST = Object.freeze({
-  crackEarly: Object.freeze([
-    "./assets/audio/crack-early-1.wav",
-    "./assets/audio/crack-early-2.wav",
-  ]),
-  crackLate: Object.freeze([
-    "./assets/audio/crack-late-1.wav",
-    "./assets/audio/crack-late-2.wav",
-  ]),
-  break: Object.freeze([
-    "./assets/audio/break-1.wav",
-    "./assets/audio/break-2.wav",
+  waxTap: Object.freeze([
+    "./assets/audio/wax-tap-1.wav",
+    "./assets/audio/wax-tap-2.wav",
+    "./assets/audio/wax-tap-3.wav",
+    "./assets/audio/wax-tap-4.wav",
+    "./assets/audio/wax-tap-5.wav",
   ]),
   squish: Object.freeze([
     "./assets/audio/squish-1.wav",
@@ -20,10 +15,8 @@ export const AUDIO_MANIFEST = Object.freeze({
 
 export function selectSample(kind, crackCount, randomValue) {
   let bank;
-  if (kind === "crack") {
-    bank = AUDIO_MANIFEST.crackLate;
-  } else if (kind === "break") {
-    bank = AUDIO_MANIFEST.break;
+  if (kind === "crack" || kind === "break") {
+    bank = AUDIO_MANIFEST.waxTap;
   } else if (kind === "squish") {
     bank = AUDIO_MANIFEST.squish;
   } else {
