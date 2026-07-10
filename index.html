@@ -18,16 +18,32 @@
 
       <button class="ball" type="button" data-ball aria-label="왁뿌볼 누르기">
         <span class="wax" aria-hidden="true"></span>
-        <span class="crack c1" aria-hidden="true"></span>
-        <span class="crack c2" aria-hidden="true"></span>
-        <span class="crack c3" aria-hidden="true"></span>
-        <span class="crack c4" aria-hidden="true"></span>
         <span class="inside" aria-hidden="true"></span>
-        <span class="fracture-web" aria-hidden="true"></span>
-        <span class="shell-chip chip-a" aria-hidden="true"></span>
-        <span class="shell-chip chip-b" aria-hidden="true"></span>
-        <span class="shell-chip chip-c" aria-hidden="true"></span>
-        <span class="shell-chip chip-d" aria-hidden="true"></span>
+        <svg class="fracture-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <g class="fracture-lines">
+            <path class="fracture-path" data-stage="1" d="M52 48 L48 39 L51 29 L46 19" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="2" d="M50 42 L41 37 L34 28 L26 25" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="2" d="M49 39 L59 34 L67 24 L75 19" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="3" d="M50 48 L61 48 L72 43 L82 46" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="3" d="M43 38 L38 48 L27 55 L19 64" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="4" d="M52 48 L56 58 L53 67 L59 79 L55 88" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="4" d="M61 48 L67 57 L79 61 L86 69" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="5" d="M38 48 L42 59 L34 69 L29 82" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path" data-stage="5" d="M67 57 L63 67 L71 77 L78 84" vector-effect="non-scaling-stroke" pathLength="1" />
+            <path class="fracture-path fracture-path-major" data-stage="6" d="M27 55 L38 53 L50 48 L61 48 L67 57 L63 67" vector-effect="non-scaling-stroke" pathLength="1" />
+          </g>
+          <g class="wax-fragments">
+            <polygon class="wax-fragment fragment-a" data-stage="4" points="19,25 34,28 41,37 29,44 16,37" />
+            <polygon class="wax-fragment fragment-b" data-stage="4" points="67,24 79,19 87,31 82,46 72,43" />
+            <polygon class="wax-fragment fragment-c" data-stage="5" points="18,56 27,55 38,48 34,69 21,73" />
+            <polygon class="wax-fragment fragment-d" data-stage="5" points="72,43 84,46 89,59 79,61 67,57" />
+            <polygon class="wax-fragment fragment-e" data-stage="6" points="29,69 42,59 53,67 47,84 30,82" />
+            <polygon class="wax-fragment fragment-f" data-stage="6" points="63,67 71,77 78,84 61,91 55,79" />
+            <polygon class="wax-fragment fragment-g" data-stage="7" points="46,19 51,29 48,39 34,28 35,15" />
+            <polygon class="wax-fragment fragment-h" data-stage="7" points="51,29 67,24 59,34 61,48 50,42" />
+          </g>
+        </svg>
+        <span class="impact-bloom" aria-hidden="true"></span>
         <span class="squish-pulse" aria-hidden="true"></span>
         <span class="burst" aria-hidden="true">빡!</span>
       </button>
