@@ -74,6 +74,10 @@ function pick(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
+function randomBetween(min, max) {
+  return min + Math.random() * (max - min);
+}
+
 function logEvent(type, data = {}) {
   console.info("wakppubol", { type, ...data });
 }
@@ -103,52 +107,140 @@ function getAudioContext() {
   return audioContext;
 }
 
-function makeNoiseBuffer(context, seconds) {
+function makeNoiseBuffer(context, seconds, profile = "soft") {
   const length = Math.max(1, Math.floor(context.sampleRate * seconds));
   const buffer = context.createBuffer(1, length, context.sampleRate);
   const data = buffer.getChannelData(0);
 
   for (let i = 0; i < length; i += 1) {
-    const fade = 1 - i / length;
-    data[i] = (Math.random() * 2 - 1) * fade;
+    const progress = i / length;
+    const fade = 1 - progress;
+    if (profile === "crackle") {
+      const impulse = Math.random() < 0.05 ? (Math.random() * 2 - 1) * randomBetween(0.65, 1.25) : 0;
+      const grain = (Math.random() * 2 - 1) * 0.24;
+      const chatter = Math.sin(progress * 180) * (Math.random() * 2 - 1) * 0.07;
+      data[i] = Math.max(-1, Math.min(1, (impulse + grain + chatter) * Math.pow(fade, 1.8)));
+      continue;
+    }
+
+    const wobble = Math.sin(progress * 18) * 0.08;
+    data[i] = ((Math.random() * 2 - 1) * 0.42 + wobble) * Math.pow(fade, 1.55);
   }
 
   return buffer;
 }
 
-function playTone(context, start, frequency, duration, volume, type = "triangle") {
+function playTone(context, start, frequency, duration, volume, type = "triangle", options = {}) {
+  const attack = options.attack ?? 0.006;
+  const endFrequencyRatio = options.endFrequencyRatio ?? 0.42;
+  const releaseTail = options.releaseTail ?? 0.02;
   const oscillator = context.createOscillator();
   const gain = context.createGain();
 
   oscillator.type = type;
   oscillator.frequency.setValueAtTime(frequency, start);
-  oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, frequency * 0.42), start + duration);
+  oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, frequency * endFrequencyRatio), start + duration);
   gain.gain.setValueAtTime(0.0001, start);
-  gain.gain.exponentialRampToValueAtTime(volume, start + 0.006);
+  gain.gain.exponentialRampToValueAtTime(volume, start + attack);
   gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
 
   oscillator.connect(gain);
   gain.connect(context.destination);
   oscillator.start(start);
-  oscillator.stop(start + duration + 0.02);
+  oscillator.stop(start + duration + releaseTail);
 }
 
-function playFilteredNoise(context, start, duration, volume, frequency) {
+function playFilteredNoise(context, start, duration, volume, frequency, options = {}) {
+  const filterType = options.filterType ?? "bandpass";
+  const q = options.q ?? 7;
+  const playbackRate = options.playbackRate ?? 1;
+  const profile = options.profile ?? "soft";
+  const attack = options.attack ?? 0.0015;
   const source = context.createBufferSource();
   const filter = context.createBiquadFilter();
   const gain = context.createGain();
 
-  source.buffer = makeNoiseBuffer(context, duration);
-  filter.type = "bandpass";
+  source.buffer = makeNoiseBuffer(context, duration, profile);
+  source.playbackRate.setValueAtTime(playbackRate, start);
+  filter.type = filterType;
   filter.frequency.setValueAtTime(frequency, start);
-  filter.Q.setValueAtTime(7, start);
-  gain.gain.setValueAtTime(volume, start);
+  filter.Q.setValueAtTime(q, start);
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + attack);
   gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
 
   source.connect(filter);
   filter.connect(gain);
   gain.connect(context.destination);
   source.start(start);
+}
+
+function playCrackleBurst(context, start, kind) {
+  const isBreak = kind === "break";
+  const burstCount = isBreak ? 6 : 3;
+
+  for (let i = 0; i < burstCount; i += 1) {
+    const offset = i * randomBetween(0.006, 0.013) + randomBetween(0, isBreak ? 0.012 : 0.007);
+    playFilteredNoise(
+      context,
+      start + offset,
+      randomBetween(0.02, isBreak ? 0.065 : 0.038),
+      isBreak ? randomBetween(0.11, 0.18) : randomBetween(0.065, 0.105),
+      randomBetween(isBreak ? 1250 : 1650, isBreak ? 2450 : 3150),
+      {
+        filterType: i % 2 === 0 ? "highpass" : "bandpass",
+        q: randomBetween(0.9, 4.5),
+        playbackRate: randomBetween(0.84, 1.18),
+        profile: "crackle",
+        attack: 0.0008,
+      },
+    );
+
+    if (i < burstCount - 1) {
+      playTone(
+        context,
+        start + offset,
+        randomBetween(isBreak ? 290 : 420, isBreak ? 560 : 880),
+        randomBetween(0.014, 0.028),
+        isBreak ? 0.022 : 0.016,
+        "triangle",
+        {
+          attack: 0.0015,
+          endFrequencyRatio: randomBetween(0.5, 0.72),
+          releaseTail: 0.01,
+        },
+      );
+    }
+  }
+
+  playTone(
+    context,
+    start + 0.012,
+    isBreak ? 124 : 176,
+    isBreak ? 0.13 : 0.085,
+    isBreak ? 0.075 : 0.045,
+    "sine",
+    {
+      attack: 0.0028,
+      endFrequencyRatio: isBreak ? 0.62 : 0.7,
+      releaseTail: 0.018,
+    },
+  );
+
+  if (isBreak) {
+    playFilteredNoise(context, start + 0.024, 0.09, 0.082, 980, {
+      filterType: "bandpass",
+      q: 1.4,
+      playbackRate: 0.88,
+      profile: "crackle",
+      attack: 0.0012,
+    });
+    playTone(context, start + 0.024, 86, 0.16, 0.042, "triangle", {
+      attack: 0.0034,
+      endFrequencyRatio: 0.78,
+      releaseTail: 0.03,
+    });
+  }
 }
 
 function playSound(kind) {
@@ -165,20 +257,27 @@ function playSound(kind) {
 
   const now = context.currentTime;
   if (kind === "squish") {
-    playTone(context, now, 180, 0.12, 0.12, "sine");
-    playTone(context, now + 0.025, 90, 0.15, 0.08, "sine");
-    playFilteredNoise(context, now, 0.11, 0.07, 680);
+    playTone(context, now, 148, 0.11, 0.082, "sine", {
+      attack: 0.003,
+      endFrequencyRatio: 0.74,
+      releaseTail: 0.025,
+    });
+    playTone(context, now + 0.019, 92, 0.16, 0.05, "triangle", {
+      attack: 0.004,
+      endFrequencyRatio: 0.82,
+      releaseTail: 0.028,
+    });
+    playFilteredNoise(context, now, 0.12, 0.052, 420, {
+      filterType: "lowpass",
+      q: 0.65,
+      playbackRate: 0.9,
+      profile: "soft",
+      attack: 0.004,
+    });
     return;
   }
 
-  const hitCount = kind === "break" ? 4 : 2;
-  for (let i = 0; i < hitCount; i += 1) {
-    const offset = i * 0.022 + Math.random() * 0.006;
-    playTone(context, now + offset, 1800 - i * 190, 0.045, kind === "break" ? 0.16 : 0.11, "square");
-    playFilteredNoise(context, now + offset, 0.052, kind === "break" ? 0.13 : 0.08, 2600 - i * 220);
-  }
-
-  playTone(context, now + 0.018, kind === "break" ? 138 : 180, 0.08, kind === "break" ? 0.12 : 0.07, "triangle");
+  playCrackleBurst(context, now, kind);
 }
 
 export function initApp(root = document) {
@@ -186,10 +285,9 @@ export function initApp(root = document) {
   const ball = root.querySelector("[data-ball]");
   const reset = root.querySelector("[data-reset]");
   const status = root.querySelector("[data-status]");
-  const counter = root.querySelector("[data-counter]");
   const liveStatus = root.querySelector("[data-live-status]");
 
-  if (!app || !ball || !reset || !status || !counter) {
+  if (!app || !ball || !reset || !status) {
     return;
   }
 
@@ -205,7 +303,6 @@ export function initApp(root = document) {
     ball.style.setProperty("--squish-tilt", game.squishCount % 2 === 0 ? "-3deg" : "4deg");
     const countText = formatCounter(game);
     status.textContent = message;
-    counter.textContent = countText;
     if (liveStatus) {
       liveStatus.textContent = `${message}. ${countText}`;
     }
