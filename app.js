@@ -2,11 +2,18 @@ import { createAudioEngine } from "./audio.js";
 
 export const MAX_CRACKS = 7;
 export const MAX_SQUISHES = 5;
+export const DESIGNS = Object.freeze(["sunny", "berry", "mint", "grape", "mango", "marble"]);
 
 const initialPhase = "wax";
 const squishPhase = "squish";
 
-export function createGame(now = Date.now()) {
+export function selectDesign(previous, randomValue = Math.random()) {
+  const choices = DESIGNS.filter((design) => design !== previous);
+  const index = Math.min(choices.length - 1, Math.max(0, Math.floor(randomValue * choices.length)));
+  return choices[index];
+}
+
+export function createGame(now = Date.now(), randomValue = Math.random()) {
   return {
     phase: initialPhase,
     cracks: 0,
@@ -15,6 +22,7 @@ export function createGame(now = Date.now()) {
     plays: 0,
     startedAt: now,
     brokenAt: null,
+    design: selectDesign(null, randomValue),
   };
 }
 
@@ -41,14 +49,15 @@ export function clickSquish(game, now = Date.now()) {
 
   return {
     ...game,
-    squishCount: Math.min(MAX_SQUISHES, game.squishCount + 1),
+    squishCount: game.squishCount + 1,
     completed: game.squishCount + 1 >= MAX_SQUISHES,
   };
 }
 
-export function resetGame(previous = createGame(), now = Date.now()) {
+export function resetGame(previous = createGame(), now = Date.now(), randomValue = Math.random()) {
   return {
-    ...createGame(now),
+    ...createGame(now, randomValue),
+    design: selectDesign(previous.design, randomValue),
     plays: previous.plays + 1,
   };
 }
@@ -91,7 +100,7 @@ function playAudio(audio, kind, crackCount) {
 
 function formatCounter(game) {
   if (game.phase === squishPhase) {
-    return `말랑 ${game.squishCount} / ${MAX_SQUISHES}`;
+    return game.completed ? `말랑 ${game.squishCount}` : `말랑 ${game.squishCount} / ${MAX_SQUISHES}`;
   }
 
   return `${game.cracks} / ${MAX_CRACKS}`;
@@ -118,8 +127,9 @@ export function initApp(root = document) {
     app.dataset.phase = game.phase;
     app.dataset.cracks = String(game.cracks);
     app.dataset.crackLevel = String(getCrackLevel(game));
-    app.dataset.squishLevel = String(Math.min(game.squishCount, MAX_SQUISHES));
+    app.dataset.squishLevel = String(game.squishCount === 0 ? 0 : ((game.squishCount - 1) % 4) + 1);
     app.dataset.completed = String(game.completed);
+    app.dataset.design = game.design;
     ball.style.setProperty("--damage", String(game.cracks / MAX_CRACKS));
     ball.style.setProperty("--squish-scale", game.squishCount % 2 === 0 ? "1.03" : "0.9");
     ball.style.setProperty("--squish-tilt", game.squishCount % 2 === 0 ? "-3deg" : "4deg");
@@ -131,7 +141,6 @@ export function initApp(root = document) {
   }
 
   function pressBall() {
-    if (game.completed) return;
     if (game.phase === initialPhase) {
       const before = game.phase;
       game = clickWax(game);

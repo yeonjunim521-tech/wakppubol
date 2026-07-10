@@ -52,6 +52,13 @@
   --damage: 0;
   --squish-scale: 1;
   --squish-tilt: 0deg;
+  --wax-light: #fff7b9;
+  --wax-mid: #f5ca58;
+  --wax-shadow: #dc902d;
+  --wax-deep: #a95f1e;
+  --gel-light: #f2feff;
+  --gel-mid: #9edaf7;
+  --gel-deep: #ff9fab;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -211,7 +218,7 @@ h1 {
     radial-gradient(ellipse at 35% 34%, rgb(255 250 214 / 0.74) 0 14%, transparent 29%),
     radial-gradient(ellipse at 66% 70%, rgb(161 82 20 / 0.22) 0 20%, transparent 39%),
     repeating-radial-gradient(ellipse at 42% 40%, rgb(255 249 214 / 0.32) 0 1px, transparent 1px 7px),
-    linear-gradient(145deg, #fff7b9 0%, #f5ca58 42%, #dc902d 76%, #a95f1e 100%);
+    linear-gradient(145deg, var(--wax-light) 0%, var(--wax-mid) 42%, var(--wax-shadow) 76%, var(--wax-deep) 100%);
   box-shadow:
     inset -30px -36px 44px var(--material-wax-deep),
     inset 16px 18px 22px var(--material-white-wax-fill),
@@ -274,7 +281,7 @@ h1 {
   background:
     radial-gradient(circle at 31% 25%, var(--material-white-gel) 0 9%, transparent 10%),
     radial-gradient(circle at 64% 68%, var(--accent-inside-shadow) 0 15%, transparent 40%),
-    linear-gradient(145deg, var(--accent-inside-glint) 0%, var(--accent-inside) 38%, var(--accent-mint) 100%);
+    linear-gradient(145deg, var(--gel-light) 0%, var(--gel-mid) 38%, var(--gel-deep) 100%);
   box-shadow:
     inset -22px -24px 32px var(--material-inside-deep),
     inset 14px 14px 20px var(--material-white-mid),
@@ -293,6 +300,20 @@ h1 {
   pointer-events: none;
   transform: translateZ(12px);
   z-index: 4;
+}
+
+[data-design="sunny"] { --wax-light: #fff9c8; --wax-mid: #f5cd55; --wax-shadow: #dc922d; --wax-deep: #a75c1d; --gel-light: #f3feff; --gel-mid: #8eddf9; --gel-deep: #5ba8e8; }
+[data-design="berry"] { --wax-light: #ffdce7; --wax-mid: #f891ad; --wax-shadow: #d95078; --wax-deep: #962f56; --gel-light: #fff3f7; --gel-mid: #ff88ad; --gel-deep: #db376c; }
+[data-design="mint"] { --wax-light: #ddfff1; --wax-mid: #70d9af; --wax-shadow: #36a981; --wax-deep: #197256; --gel-light: #efffff; --gel-mid: #82eadb; --gel-deep: #34aeb1; }
+[data-design="grape"] { --wax-light: #eee1ff; --wax-mid: #ae83e2; --wax-shadow: #7650b9; --wax-deep: #493075; --gel-light: #fbf2ff; --gel-mid: #c986f2; --gel-deep: #7144cb; }
+[data-design="mango"] { --wax-light: #fff0c2; --wax-mid: #ffb947; --wax-shadow: #ee762f; --wax-deep: #a84422; --gel-light: #fff8d7; --gel-mid: #ffc751; --gel-deep: #f27632; }
+[data-design="marble"] { --wax-light: #e7f5ff; --wax-mid: #87c9ec; --wax-shadow: #ef8fbd; --wax-deep: #765ab5; --gel-light: #fff5ff; --gel-mid: #86e4df; --gel-deep: #f48fb4; }
+
+[data-design="marble"] .wax,
+[data-design="marble"] .inside {
+  background-image:
+    radial-gradient(circle at 24% 26%, rgb(255 255 255 / 0.72), transparent 18%),
+    conic-gradient(from 40deg at 58% 56%, var(--gel-mid), var(--gel-deep), var(--wax-mid), var(--gel-mid));
 }
 
 .fracture-path {

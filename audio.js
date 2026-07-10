@@ -16,9 +16,11 @@ export const AUDIO_MANIFEST = Object.freeze({
 export function selectSample(kind, crackCount, randomValue) {
   let bank;
   if (kind === "crack") {
-    bank = crackCount <= 3 ? AUDIO_MANIFEST.crackEarly : AUDIO_MANIFEST.crackLate;
+    bank = AUDIO_MANIFEST.crackLate;
   } else if (kind === "break") {
     bank = AUDIO_MANIFEST.break;
+  } else if (kind === "squish") {
+    bank = AUDIO_MANIFEST.crackLate;
   } else {
     return null;
   }
@@ -231,8 +233,14 @@ export function createAudioEngine({ onBlocked = () => {} } = {}) {
       const source = audioContext.createBufferSource();
       const gain = audioContext.createGain();
       source.buffer = recordedBuffer;
-      source.playbackRate.setValueAtTime(randomBetween(0.94, 1.06), now);
-      gain.gain.setValueAtTime(randomBetween(0.94, 1.08), now);
+      source.playbackRate.setValueAtTime(
+        kind === "squish" ? randomBetween(0.72, 0.88) : randomBetween(0.94, 1.06),
+        now,
+      );
+      gain.gain.setValueAtTime(
+        kind === "squish" ? randomBetween(0.5, 0.68) : randomBetween(0.94, 1.08),
+        now,
+      );
       source.connect(gain);
       gain.connect(master);
       source.start(now);

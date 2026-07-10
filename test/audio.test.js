@@ -64,8 +64,8 @@ test("every recorded sample is a local asset", () => {
   }
 });
 
-test("early and late cracks use different banks", () => {
-  assert.notEqual(selectSample("crack", 1, 0), selectSample("crack", 6, 0));
+test("early and late cracks use the same crunchy bank", () => {
+  assert.equal(selectSample("crack", 1, 0), selectSample("crack", 6, 0));
 });
 
 test("selection clamps a random value at the upper boundary", () => {
@@ -73,8 +73,8 @@ test("selection clamps a random value at the upper boundary", () => {
   assert.equal(selected, AUDIO_MANIFEST.break.at(-1));
 });
 
-test("squish intentionally uses synthesized audio only", () => {
-  assert.equal(selectSample("squish", 0, 0.5), null);
+test("squish layers a recorded crunch sample", () => {
+  assert.match(selectSample("squish", 0, 0.5), /crack-late/);
 });
 
 test("a crack layers short triangle tones beneath every rich burst except the last", () => {

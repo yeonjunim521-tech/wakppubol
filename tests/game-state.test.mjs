@@ -3,11 +3,13 @@ import assert from "node:assert/strict";
 import {
   MAX_CRACKS,
   MAX_SQUISHES,
+  DESIGNS,
   clickSquish,
   clickWax,
   createGame,
   getCrackLevel,
   resetGame,
+  selectDesign,
 } from "../app.js";
 
 test("wax clicks increase cracks without mutating previous state", () => {
@@ -79,6 +81,20 @@ test("squish clicks complete the toy at the max squish count", () => {
   assert.equal(game.squishCount, MAX_SQUISHES);
   assert.equal(game.completed, true);
   assert.equal(game.plays, 0);
+
+  game = clickSquish(game, 401);
+  game = clickSquish(game, 402);
+  assert.equal(game.squishCount, MAX_SQUISHES + 2);
+  assert.equal(game.completed, true);
+});
+
+test("first load and reset select a design and avoid the previous one", () => {
+  const first = createGame(100, 0);
+  assert.equal(first.design, DESIGNS[0]);
+  assert.equal(selectDesign(first.design, 0), DESIGNS[1]);
+
+  const second = resetGame(first, 500, 0);
+  assert.notEqual(second.design, first.design);
 });
 
 test("reset starts a fresh wax ball and increments play count", () => {

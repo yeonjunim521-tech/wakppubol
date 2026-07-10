@@ -63,7 +63,9 @@ test("the fifth squish completes the toy without replacing it", () => {
   assert.equal(game.phase, "squish");
   assert.equal(game.squishCount, 5);
   assert.equal(game.completed, true);
-  assert.deepEqual(clickSquish(game, 99), game);
+  const continued = clickSquish(game, 99);
+  assert.equal(continued.squishCount, 6);
+  assert.equal(continued.completed, true);
 });
 
 test("pointer and native keyboard clicks each advance exactly once", () => {
@@ -148,4 +150,11 @@ test("completed state hides the wax shell and reveals reset only then", async ()
   assert.match(css, /\[data-phase="squish"\] \.fracture-svg\s*\{[^}]*opacity:\s*0/s);
   assert.match(css, /\.reset\s*\{[^}]*display:\s*none/s);
   assert.match(css, /\[data-completed="true"\] \.reset\s*\{[^}]*display:\s*block/s);
+});
+
+test("six randomized wax and squish design themes are styled", async () => {
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  for (const design of ["sunny", "berry", "mint", "grape", "mango", "marble"]) {
+    assert.match(css, new RegExp(`\\[data-design="${design}"\\]`));
+  }
 });
