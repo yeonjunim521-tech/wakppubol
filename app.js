@@ -62,6 +62,12 @@ export function getCrackLevel(game) {
   return Math.min(5, Math.ceil((game.cracks / MAX_CRACKS) * 5));
 }
 
+export function normalizePointer(clientX, clientY, rect) {
+  const x = Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100));
+  const y = Math.min(100, Math.max(0, ((clientY - rect.top) / rect.height) * 100));
+  return { x: Math.round(x), y: Math.round(y) };
+}
+
 const messages = {
   wax: ["톡", "빠각", "조금 더", "찌직"],
   squish: ["말랑", "꾸욱", "물컹"],
@@ -308,7 +314,13 @@ export function initApp(root = document) {
     }
   }
 
-  function pressBall() {
+  function pressBall(event) {
+    if (event?.type === "pointerdown") {
+      const point = normalizePointer(event.clientX, event.clientY, ball.getBoundingClientRect());
+      ball.style.setProperty("--impact-x", `${point.x}%`);
+      ball.style.setProperty("--impact-y", `${point.y}%`);
+    }
+
     if (game.phase === initialPhase) {
       const before = game.phase;
       game = clickWax(game);
