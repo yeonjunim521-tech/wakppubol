@@ -73,8 +73,8 @@ test("selection clamps a random value at the upper boundary", () => {
   assert.equal(selected, AUDIO_MANIFEST.break.at(-1));
 });
 
-test("squish layers a recorded crunch sample", () => {
-  assert.match(selectSample("squish", 0, 0.5), /crack-late/);
+test("squish layers a recorded soft slime sample", () => {
+  assert.match(selectSample("squish", 0, 0.5), /squish-/);
 });
 
 test("a crack layers short triangle tones beneath every rich burst except the last", () => {

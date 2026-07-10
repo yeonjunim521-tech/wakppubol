@@ -11,6 +11,11 @@ export const AUDIO_MANIFEST = Object.freeze({
     "./assets/audio/break-1.wav",
     "./assets/audio/break-2.wav",
   ]),
+  squish: Object.freeze([
+    "./assets/audio/squish-1.wav",
+    "./assets/audio/squish-2.wav",
+    "./assets/audio/squish-3.wav",
+  ]),
 });
 
 export function selectSample(kind, crackCount, randomValue) {
@@ -20,7 +25,7 @@ export function selectSample(kind, crackCount, randomValue) {
   } else if (kind === "break") {
     bank = AUDIO_MANIFEST.break;
   } else if (kind === "squish") {
-    bank = AUDIO_MANIFEST.crackLate;
+    bank = AUDIO_MANIFEST.squish;
   } else {
     return null;
   }
@@ -150,22 +155,17 @@ function playCrackleBurst(context, output, start, kind) {
 }
 
 function playSquish(context, output, start) {
-  playTone(context, output, start, 148, 0.11, 0.082, "sine", {
-    attack: 0.003,
-    endFrequencyRatio: 0.74,
-    releaseTail: 0.025,
-  });
-  playTone(context, output, start + 0.019, 92, 0.16, 0.05, "triangle", {
-    attack: 0.004,
+  playTone(context, output, start, 118, 0.18, 0.032, "sine", {
+    attack: 0.018,
     endFrequencyRatio: 0.82,
-    releaseTail: 0.028,
+    releaseTail: 0.04,
   });
-  playFilteredNoise(context, output, start, 0.12, 0.052, 420, {
+  playFilteredNoise(context, output, start, 0.18, 0.025, 310, {
     filterType: "lowpass",
-    q: 0.65,
-    playbackRate: 0.9,
+    q: 0.5,
+    playbackRate: 0.76,
     profile: "soft",
-    attack: 0.004,
+    attack: 0.018,
   });
 }
 
@@ -234,11 +234,11 @@ export function createAudioEngine({ onBlocked = () => {} } = {}) {
       const gain = audioContext.createGain();
       source.buffer = recordedBuffer;
       source.playbackRate.setValueAtTime(
-        kind === "squish" ? randomBetween(0.72, 0.88) : randomBetween(0.94, 1.06),
+        kind === "squish" ? randomBetween(0.92, 1.04) : randomBetween(0.94, 1.06),
         now,
       );
       gain.gain.setValueAtTime(
-        kind === "squish" ? randomBetween(0.5, 0.68) : randomBetween(0.94, 1.08),
+        kind === "squish" ? randomBetween(0.72, 0.88) : randomBetween(0.94, 1.08),
         now,
       );
       source.connect(gain);

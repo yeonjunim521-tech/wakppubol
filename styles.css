@@ -335,6 +335,30 @@ h1 {
   stroke-width: 2.2;
 }
 
+.break-hole {
+  fill: var(--gel-mid);
+  stroke: rgb(255 250 226 / 0.9);
+  stroke-width: 1.7;
+  opacity: 0;
+  filter:
+    drop-shadow(2px 2px 2px rgb(52 28 12 / 0.48))
+    drop-shadow(-1px -1px 0 rgb(255 251 231 / 0.85));
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.45);
+  transition: opacity 140ms ease, transform 210ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-cracks="2"] .break-hole[data-stage="2"],
+[data-cracks="3"] .break-hole:is([data-stage="2"], [data-stage="3"]),
+[data-cracks="4"] .break-hole:not([data-stage="5"]):not([data-stage="6"]),
+[data-cracks="5"] .break-hole:not([data-stage="6"]),
+[data-cracks="6"] .break-hole,
+[data-cracks="7"] .break-hole {
+  opacity: 0.96;
+  transform: scale(1);
+}
+
 [data-cracks="1"] .fracture-path[data-stage="1"],
 [data-cracks="2"] .fracture-path:is([data-stage="1"], [data-stage="2"]),
 [data-cracks="3"] .fracture-path:is([data-stage="1"], [data-stage="2"], [data-stage="3"]),
@@ -367,9 +391,11 @@ h1 {
 .fragment-g { --fragment-x: -8px; --fragment-y: -12px; --fragment-rotate: -17deg; }
 .fragment-h { --fragment-x: 9px; --fragment-y: -11px; --fragment-rotate: 19deg; }
 
-[data-cracks="4"] .wax-fragment[data-stage="4"],
-[data-cracks="5"] .wax-fragment:is([data-stage="4"], [data-stage="5"]),
-[data-cracks="6"] .wax-fragment:not([data-stage="7"]),
+[data-cracks="2"] .wax-fragment[data-stage="2"],
+[data-cracks="3"] .wax-fragment:is([data-stage="2"], [data-stage="3"]),
+[data-cracks="4"] .wax-fragment:not([data-stage="5"]):not([data-stage="6"]),
+[data-cracks="5"] .wax-fragment:not([data-stage="6"]),
+[data-cracks="6"] .wax-fragment,
 [data-cracks="7"] .wax-fragment {
   opacity: 0.92;
   transform: translate(var(--fragment-x), var(--fragment-y)) rotate(var(--fragment-rotate));

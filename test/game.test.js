@@ -105,21 +105,25 @@ test("non-primary, right-button, and canceled pointer gestures do not advance", 
 test("markup exposes staged SVG fracture and fragment layers", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const fracturePaths = html.match(/<path\b[^>]*class="[^"]*fracture-path[^"]*"[^>]*>/g) ?? [];
-  const fragments = html.match(/<polygon\b[^>]*class="[^"]*wax-fragment[^"]*"[^>]*>/g) ?? [];
+  const fragments = html.match(/<path\b[^>]*class="[^"]*wax-fragment[^"]*"[^>]*>/g) ?? [];
+  const holes = html.match(/<path\b[^>]*class="[^"]*break-hole[^"]*"[^>]*>/g) ?? [];
 
   assert.match(html, /class="fracture-svg"/);
   assert.ok(fracturePaths.length >= 8, "provides at least eight fracture paths");
   assert.ok(fragments.length >= 8, "provides at least eight wax fragments");
+  assert.ok(holes.length >= 6, "provides irregular openings where shell pieces broke away");
   for (const stage of [1, 2, 3, 4, 5, 6]) {
     assert.ok(fracturePaths.some((path) => path.includes(`data-stage="${stage}"`)), `fracture paths cover stage ${stage}`);
   }
-  for (const stage of [4, 5, 6, 7]) {
+  for (const stage of [2, 3, 4, 5, 6]) {
     assert.ok(fragments.some((fragment) => fragment.includes(`data-stage="${stage}"`)), `fragments cover stage ${stage}`);
   }
   for (const path of fracturePaths) {
     assert.match(path, /vector-effect="non-scaling-stroke"/);
     assert.match(path, /pathLength="1"/);
+    assert.match(path, /\sd="[^"]*[QC][^"]*"/, "fractures use curved organic segments");
   }
+  assert.doesNotMatch(html, /<polygon\b[^>]*wax-fragment/);
   assert.match(html, /class="impact-bloom"/);
 });
 

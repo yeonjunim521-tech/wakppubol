@@ -1,6 +1,6 @@
 # Audio asset licenses
 
-All six files below are edited derivatives of sounds whose individual Freesound pages displayed **Creative Commons 0** when checked on 2026-07-10. The derivatives were made from Freesound's public low-quality MP3 preview files because downloading the original files requires a Freesound login. MP3 preview encoding is therefore present in the source material.
+All files below are edited derivatives of sounds whose individual Freesound pages displayed **Creative Commons 0** when checked on 2026-07-10. The derivatives were made from Freesound's public low-quality MP3 preview files because downloading the original files requires a Freesound login. MP3 preview encoding is therefore present in the source material.
 
 ## crack-early-1.wav
 
@@ -67,3 +67,14 @@ All six files below are edited derivatives of sounds whose individual Freesound 
 - License URL: https://creativecommons.org/publicdomain/zero/1.0/
 - Verified: 2026-07-10
 - Edits: excerpted one celery crack cluster (0.405–0.735 s), trimmed silence, converted to mono 48 kHz 16-bit PCM WAV, removed DC with a 20 Hz high-pass filter, and applied 1 ms fade-in and 10 ms fade-out.
+
+## squish-1.wav, squish-2.wav, squish-3.wav
+
+- Source page: https://freesound.org/people/rubberduck9999/sounds/680447/
+- Preview used: https://cdn.freesound.org/previews/680/680447_14687392-lq.mp3
+- Original title: slime - squishing sounds
+- Creator: rubberduck9999
+- License: CC0 1.0 Universal
+- License URL: https://creativecommons.org/publicdomain/zero/1.0/
+- Verified: 2026-07-10
+- Edits: extracted three individual soft slime compression events from the public preview, converted to mono 48 kHz 16-bit PCM WAV, high-pass filtered at 45 Hz, gently low-pass filtered at 6.2–7 kHz, reduced gain, and applied short fade-in/fade-out envelopes.
