@@ -121,7 +121,13 @@ test("markup exposes staged SVG fracture and fragment layers", async () => {
   for (const path of fracturePaths) {
     assert.match(path, /vector-effect="non-scaling-stroke"/);
     assert.match(path, /pathLength="1"/);
-    assert.match(path, /\sd="[^"]*[QC][^"]*"/, "fractures use curved organic segments");
+    const d = path.match(/\sd="([^"]+)"/)?.[1] ?? "";
+    assert.ok((d.match(/L/g) ?? []).length >= 4, "fractures use several short jagged segments");
+  }
+  for (const piece of [...holes, ...fragments]) {
+    const d = piece.match(/\sd="([^"]+)"/)?.[1] ?? "";
+    assert.doesNotMatch(d, /[QC]/, "wax plates have angular brittle edges");
+    assert.ok((d.match(/L/g) ?? []).length >= 6, "wax plates have irregular multi-point edges");
   }
   assert.doesNotMatch(html, /<polygon\b[^>]*wax-fragment/);
   assert.match(html, /class="impact-bloom"/);
